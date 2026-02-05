@@ -13,11 +13,31 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  # Email configuration
+  mail:
+    host: smtp-relay.brevo.com
+    port: 587
+    username: ${BREVO_USERNAME}
+    password: ${BREVO_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          from: ${BREVO_FROM_EMAIL}
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+
+
+
 
 # prefix of endpoints
 server:
   servlet:
     context-path: /api/v1.0
+
+
+
 
 
 
