@@ -10,7 +10,7 @@ public class ProfileMapper {
                 .id(profileDto.getId())
                 .fullName(profileDto.getFullName())
                 .email(profileDto.getEmail())
-                .password(profileDto.getPassword())
+//                .password(profileDto.getPassword())
                 .profileImageUrl(profileDto.getProfileImageUrl())
                 .createdAt(profileDto.getCreatedAt())
                 .updatedAt(profileDto.getUpdatedAt())

@@ -28,7 +28,16 @@ spring:
             enable: true
     protocol: smtp
 
-
+# JWT Configuration
+# Generate a secure secret key (minimum 256 bits for HS256)
+# You can generate one using: openssl rand -base64 64
+jwt:
+  secret: abc
+  expiration: 86400000
+  # JWT token expiration: 24 hours (in milliseconds)
+  # Refresh token expiration: 7 days (in milliseconds)
+  refresh-token:
+    expiration: 604800000
 
 
 # prefix of endpoints
