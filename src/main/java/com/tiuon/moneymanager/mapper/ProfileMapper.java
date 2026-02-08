@@ -2,7 +2,9 @@ package com.tiuon.moneymanager.mapper;
 
 import com.tiuon.moneymanager.dto.ProfileDto;
 import com.tiuon.moneymanager.entity.ProfileEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProfileMapper {
 
     public static ProfileEntity toEntity(ProfileDto profileDto) {

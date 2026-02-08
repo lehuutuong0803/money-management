@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,7 +18,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JwrRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
@@ -34,7 +33,7 @@ public class JwrRequestFilter extends OncePerRequestFilter {
         String email = null;
         String jwt = null;
 
-        if (authHeader != null && authHeader.startsWith("bearer ")) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             // Extract the actual token (remove "bearer " prefix)
             jwt = authHeader.substring(7);
             // Extract username/email from the token
@@ -59,7 +58,7 @@ public class JwrRequestFilter extends OncePerRequestFilter {
                 // Add request details (IP address, session, etc.)
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // Set authentication in Spring Security context
+                // Set authentication in Sprin g Security context
                 // This tells Spring Security: "This user is authenticated!"
                 SecurityContextHolder.getContext().setAuthentication((authToken));
             }
