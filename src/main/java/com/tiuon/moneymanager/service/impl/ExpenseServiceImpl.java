@@ -11,14 +11,16 @@ import com.tiuon.moneymanager.service.ICategoryService;
 import com.tiuon.moneymanager.service.IExpenseService;
 import com.tiuon.moneymanager.service.IProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ExpenseService implements IExpenseService {
+public class ExpenseServiceImpl implements IExpenseService {
     private final ICategoryService iCategoryService;
     private final ExpenseRepository expenseRepository;
     private final IProfileService iProfileService;
@@ -56,6 +58,34 @@ public class ExpenseService implements IExpenseService {
             throw new RuntimeException("Unauthorized to delete this expense");
         }
         expenseRepository.delete(expenseEntity);
+    }
+
+    // Get latest 5 expenses for current user
+    public List<ExpenseDto> getLatest5ExpenseForCurrentUser() {
+        ProfileEntity profile = iProfileService.getCurrentProfile();
+        List<ExpenseEntity> expenseEntityList = expenseRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());
+        return expenseEntityList.stream().map(ExpenseMapper::toDto).toList();
+    }
+
+    // Get total expenses for current user
+    public BigDecimal getTotalExpensesForCurrentUser() {
+        ProfileEntity profile = iProfileService.getCurrentProfile();
+        BigDecimal totalExpenses = expenseRepository.findTotalExpenseByProfileId(profile.getId());
+        return  totalExpenses != null ? totalExpenses : BigDecimal.ZERO;
+    }
+
+    // Filter expenses
+    public List<ExpenseDto> filterExpenses(LocalDate startDate, LocalDate endDate, String keyword, Sort sort) {
+        ProfileEntity profile = iProfileService.getCurrentProfile();
+        List<ExpenseEntity> list = expenseRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(
+                profile.getId(), startDate, endDate, keyword, sort);
+        return list.stream().map(ExpenseMapper::toDto).toList();
+    }
+
+    // Notifications
+    public List<ExpenseDto> getExpensesForUserOnDate(Long profileId, LocalDate date) {
+        List<ExpenseEntity> expenseEntityList = expenseRepository.findByProfileIdAndDate(profileId, date);
+        return expenseEntityList.stream().map(ExpenseMapper::toDto).toList();
     }
 
 }

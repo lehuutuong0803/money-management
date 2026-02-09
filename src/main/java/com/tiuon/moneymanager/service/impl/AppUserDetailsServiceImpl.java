@@ -14,7 +14,7 @@ import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
-public class AppUserDetailsService implements IAppUserDetailsSerivce, UserDetailsService {
+public class AppUserDetailsServiceImpl implements IAppUserDetailsSerivce, UserDetailsService {
     private final ProfileRepository profileRepository;
 
     @Override

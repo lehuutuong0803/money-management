@@ -3,7 +3,6 @@ package com.tiuon.moneymanager.controller;
 import com.tiuon.moneymanager.dto.AuthDto;
 import com.tiuon.moneymanager.dto.ProfileDto;
 import com.tiuon.moneymanager.service.IProfileService;
-import com.tiuon.moneymanager.service.impl.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

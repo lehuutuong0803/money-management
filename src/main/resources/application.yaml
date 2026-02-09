@@ -45,6 +45,11 @@ server:
   servlet:
     context-path: /api/v1.0
 
+money:
+  manager:
+    frontend:
+      url: http://localhost:5173
+
 
 
 

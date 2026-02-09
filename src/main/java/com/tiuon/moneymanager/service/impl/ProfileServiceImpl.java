@@ -23,13 +23,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ProfileService implements IProfileService {
+public class ProfileServiceImpl implements IProfileService {
     private final ProfileRepository profileRepository;
     private final IEmailService iEmailService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final AppUserDetailsService appUserDetailsService;
+    private final AppUserDetailsServiceImpl appUserDetailsServiceImpl;
 
     public ProfileDto registerProfile(ProfileDto profileDto) {
         ProfileEntity newProfile = ProfileMapper.toEntity(profileDto);
@@ -67,7 +67,7 @@ public class ProfileService implements IProfileService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword()));
             // Generate JWT Token
-            UserDetails userDetails = appUserDetailsService.loadUserByUsername(authDto.getEmail());
+            UserDetails userDetails = appUserDetailsServiceImpl.loadUserByUsername(authDto.getEmail());
             String token = jwtUtil.generateToken(userDetails);
             return Map.of(
               "token", token,

@@ -1,27 +1,25 @@
 package com.tiuon.moneymanager.service.impl;
 
 import com.tiuon.moneymanager.dto.IncomeDto;
-import com.tiuon.moneymanager.dto.IncomeDto;
 import com.tiuon.moneymanager.entity.CategoryEntity;
-import com.tiuon.moneymanager.entity.ExpenseEntity;
 import com.tiuon.moneymanager.entity.IncomeEntity;
 import com.tiuon.moneymanager.entity.ProfileEntity;
-import com.tiuon.moneymanager.mapper.ExpenseMapper;
 import com.tiuon.moneymanager.mapper.IncomeMapper;
 import com.tiuon.moneymanager.repository.CategoryRepository;
 import com.tiuon.moneymanager.repository.IncomeRepository;
 import com.tiuon.moneymanager.service.IIcomeService;
 import com.tiuon.moneymanager.service.IProfileService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class IncomeService implements IIcomeService {
+public class IncomeServiceImpl implements IIcomeService {
     private final IProfileService iProfileService;
     private final CategoryRepository categoryRepository;
     private final IncomeRepository incomeRepository;
@@ -57,5 +55,27 @@ public class IncomeService implements IIcomeService {
             throw new RuntimeException("Unauthorized to delete this income");
         }
         incomeRepository.delete(incomeEntity);
+    }
+
+    // Get latest 5 incomes for current user
+    public List<IncomeDto> getLatest5IncomeForCurrentUser() {
+        ProfileEntity profile = iProfileService.getCurrentProfile();
+        List<IncomeEntity> incomeEntityList = incomeRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());
+        return incomeEntityList.stream().map(IncomeMapper::toDto).toList();
+    }
+
+    // Get total expenses for current user
+    public BigDecimal getTotalIncomeForCurrentUser() {
+        ProfileEntity profile = iProfileService.getCurrentProfile();
+        BigDecimal totalIncome = incomeRepository.findTotalExpenseByProfileId(profile.getId());
+        return  totalIncome != null ? totalIncome : BigDecimal.ZERO;
+    }
+
+    // Filter incomes
+    public List<IncomeDto> filterIncomes(LocalDate startDate, LocalDate endDate, String keyword, Sort sort) {
+        ProfileEntity profile = iProfileService.getCurrentProfile();
+        List<IncomeEntity> list = incomeRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(
+                profile.getId(), startDate, endDate, keyword, sort);
+        return list.stream().map(IncomeMapper::toDto).toList();
     }
 }

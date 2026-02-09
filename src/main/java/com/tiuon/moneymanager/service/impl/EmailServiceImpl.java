@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmailService implements IEmailService {
+public class EmailServiceImpl implements IEmailService {
 
     private final JavaMailSender mailSender;
 

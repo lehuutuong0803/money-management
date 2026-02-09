@@ -1,7 +1,6 @@
 package com.tiuon.moneymanager.service.impl;
 
 import com.tiuon.moneymanager.dto.CategoryDto;
-import com.tiuon.moneymanager.dto.ProfileDto;
 import com.tiuon.moneymanager.entity.CategoryEntity;
 import com.tiuon.moneymanager.entity.ProfileEntity;
 import com.tiuon.moneymanager.mapper.CategoryMapper;
@@ -9,15 +8,13 @@ import com.tiuon.moneymanager.repository.CategoryRepository;
 import com.tiuon.moneymanager.service.ICategoryService;
 import com.tiuon.moneymanager.service.IProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
 
     private final IProfileService iProfileService;
     private final CategoryRepository categoryRepository;

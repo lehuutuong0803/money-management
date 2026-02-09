@@ -1,7 +1,7 @@
 package com.tiuon.moneymanager.config;
 
 import com.tiuon.moneymanager.security.JwtRequestFilter;
-import com.tiuon.moneymanager.service.impl.AppUserDetailsService;
+import com.tiuon.moneymanager.service.impl.AppUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final AppUserDetailsService appUserDetailsService;
+    private final AppUserDetailsServiceImpl appUserDetailsServiceImpl;
     private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
@@ -62,7 +62,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(appUserDetailsService);
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(appUserDetailsServiceImpl);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(daoAuthenticationProvider);
     }
