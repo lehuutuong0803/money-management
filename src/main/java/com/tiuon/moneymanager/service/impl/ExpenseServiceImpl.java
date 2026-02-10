@@ -10,6 +10,7 @@ import com.tiuon.moneymanager.repository.ExpenseRepository;
 import com.tiuon.moneymanager.service.ICategoryService;
 import com.tiuon.moneymanager.service.IExpenseService;
 import com.tiuon.moneymanager.service.IProfileService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,7 @@ public class ExpenseServiceImpl implements IExpenseService {
     }
 
     // Notifications
+    @Transactional
     public List<ExpenseDto> getExpensesForUserOnDate(Long profileId, LocalDate date) {
         List<ExpenseEntity> expenseEntityList = expenseRepository.findByProfileIdAndDate(profileId, date);
         return expenseEntityList.stream().map(ExpenseMapper::toDto).toList();

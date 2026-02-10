@@ -9,6 +9,7 @@ import com.tiuon.moneymanager.service.IEmailService;
 import com.tiuon.moneymanager.service.IProfileService;
 import com.tiuon.moneymanager.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,6 +32,9 @@ public class ProfileServiceImpl implements IProfileService {
     private final JwtUtil jwtUtil;
     private final AppUserDetailsServiceImpl appUserDetailsServiceImpl;
 
+    @Value("${app.activation.url}")
+    private String activationURL;
+
     public ProfileDto registerProfile(ProfileDto profileDto) {
         ProfileEntity newProfile = ProfileMapper.toEntity(profileDto);
         newProfile.setActivationToken(UUID.randomUUID().toString());
@@ -38,7 +42,7 @@ public class ProfileServiceImpl implements IProfileService {
         newProfile = profileRepository.save(newProfile);
 
         // send activation email
-        String activationLink = "http://localhost:8080/api/v1.0/activate?token=" + newProfile.getActivationToken();
+        String activationLink = activationURL + "/api/v1.0/activate?token=" + newProfile.getActivationToken();
         String subject = "Activate your Money Manager Account";
         String body = "Click on the following link to activate your account: " + activationLink;
         iEmailService.sendEmail(newProfile.getEmail(), subject, body);

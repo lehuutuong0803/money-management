@@ -27,6 +27,9 @@ spring:
           starttls:
             enable: true
     protocol: smtp
+    # Activate profile
+  profiles:
+    active: "prod"
 
 # JWT Configuration
 # Generate a secure secret key (minimum 256 bits for HS256)
@@ -48,8 +51,11 @@ server:
 money:
   manager:
     frontend:
-      url: http://localhost:5173
+      url: ${MONEY_MANAGER_FRONTEND_URL}
 
+app:
+  activation:
+    url: ${MONEY_MANAGER_BACKEND_URL}
 
 
 

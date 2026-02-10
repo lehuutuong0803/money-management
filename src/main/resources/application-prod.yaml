@@ -1,0 +1,7 @@
+
+spring:
+  #mysql configuration
+  datasource:
+    url: jdbc:${PROD_DB_HOST}
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
